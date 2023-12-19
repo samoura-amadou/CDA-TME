@@ -1,0 +1,97 @@
+package algorithms;
+
+import java.awt.Point;
+import java.util.ArrayList;
+
+/***************************************************************
+ * TME 1: calcul de diamètre et de cercle couvrant minimum.    *
+ *   - Trouver deux points les plus éloignés d'un ensemble de  *
+ *     points donné en entrée.                                 *
+ *   - Couvrir l'ensemble de poitns donné en entrée par un     *
+ *     cercle de rayon minimum.                                *
+ *                                                             *
+ * class Circle:                                               *
+ *   - Circle(Point c, int r) constructs a new circle          *
+ *     centered at c with radius r.                            *
+ *   - Point getCenter() returns the center point.             *
+ *   - int getRadius() returns the circle radius.              *
+ *                                                             *
+ * class Line:                                                 *
+ *   - Line(Point p, Point q) constructs a new line            *
+ *     starting at p ending at q.                              *
+ *   - Point getP() returns one of the two end points.         *
+ *   - Point getQ() returns the other end point.               *
+ ***************************************************************/
+import supportGUI.Circle;
+import supportGUI.Line;
+
+public class DefaultTeam {
+  private ArrayList<Point> points;
+
+  private double distance(Point a, Point b) {
+    return Math.sqrt(Math.pow(b.x - a.x, 2) + Math.pow(b.y - a.y, 2));
+  }
+  // calculDiametre: ArrayList<Point> --> Line
+  //   renvoie une paire de points de la liste, de distance maximum.
+  public Line calculDiametre(ArrayList<Point> points) {
+    if (points.size()<3) {
+      return null;
+    }
+
+    Point p=points.get(0);
+    Point q=points.get(1);
+
+    /*******************/
+    double maxDistance = distance(p, q);
+
+    for (int i = 0; i < points.size(); i++) {
+      for (int j = i + 1; j < points.size(); j++) {
+        Point currentP = points.get(i);
+        Point currentQ = points.get(j);
+        double currentDistance = distance(currentP, currentQ);
+
+        if (currentDistance > maxDistance) {
+          maxDistance = currentDistance;
+          p = currentP;
+          q = currentQ;
+        }
+      }
+    }
+    /*******************/
+
+    return new Line(p,q);
+  }
+
+  // calculCercleMin: ArrayList<Point> --> Circle
+//   renvoie un cercle couvrant tout point de la liste, de rayon minimum.
+  public Circle calculCercleMin(ArrayList<Point> points) {
+    this.points = points;
+    if (points.isEmpty()) {
+      return null;
+    }
+
+    Point center = points.get(0);
+    double radius = 0;
+
+    for (int i = 1; i < points.size(); i++) {
+      Point currentPoint = points.get(i);
+
+      // Si le point est en dehors du cercle actuel, agrandir le cercle
+      if (distance(center, currentPoint) > radius) {
+        center = currentPoint;
+        radius = 0; // Réinitialiser le rayon car le centre a changé
+        for (int j = 0; j < i; j++) {
+          Point previousPoint = points.get(j);
+          if (distance(center, previousPoint) > radius) {
+            radius = distance(center, previousPoint);
+          }
+        }
+      }
+    }
+
+    return new Circle(center, (int) radius); // Convertit en entier pour le rayon du cercle
+  }
+
+
+
+}
