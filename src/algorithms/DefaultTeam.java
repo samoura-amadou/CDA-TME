@@ -10,7 +10,7 @@ public class DefaultTeam {
 
   // calculDiametre: ArrayList<Point> --> Line
   //   renvoie une paire de points de la liste, de distance maximum.
-  public ArrayList<Point> calculDiametre(ArrayList<Point> points) {
+  public Line calculDiametre(ArrayList<Point> points) {
     return tme1exercice7(points);
     //return tme1exercice6(points);
   }
@@ -124,7 +124,7 @@ public class DefaultTeam {
     for (Point s: points) for (Point t: points) if (s.distance(t)>p.distance(q)) {p=s;q=t;}
     return new Line(p,q);
   }
-  private ArrayList<Point> tme1exercice7(ArrayList<Point> points){
+  private Line tme1exercice7(ArrayList<Point> points){
     //VOIR CORRECTION TME2EXERCICE3
     return null;
   }
