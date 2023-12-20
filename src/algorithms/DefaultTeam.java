@@ -8,11 +8,27 @@ import supportGUI.Line;
 
 public class DefaultTeam {
 
-  // calculDiametre: ArrayList<Point> --> Line
-  //   renvoie une paire de points de la liste, de distance maximum.
   public Line calculDiametre(ArrayList<Point> points) {
-    return tme1exercice7(points);
-    //return tme1exercice6(points);
+    Line diametre = null;
+    double maxDistance = 0;
+
+    // Recherche du diamètre par chaque paire de points
+    for (int i = 0; i < points.size(); i++) {
+      for (int j = i + 1; j < points.size(); j++) {
+        Point p = points.get(i);
+        Point q = points.get(j);
+
+        double distance = p.distance(q);
+
+        // Si la distance entre les points est la plus grande trouvée jusqu'à présent
+        if (distance > maxDistance) {
+          maxDistance = distance;
+          diametre = new Line(p, q);
+        }
+      }
+    }
+
+    return diametre;
   }
 
   // calculCercleMin: ArrayList<Point> --> Circle
